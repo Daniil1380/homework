@@ -14,6 +14,8 @@ public abstract class Person {
 
     private Gender gender;
 
+    private Person dad;
+
     public Person(String name, int age, double weight, int height) {
         this.name = name;
         this.age = age;
@@ -91,6 +93,14 @@ public abstract class Person {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public Person getDad() {
+        return dad;
+    }
+
+    public void setDad(Person dad) {
+        this.dad = dad;
     }
 
     @Override

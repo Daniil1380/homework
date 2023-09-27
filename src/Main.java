@@ -27,5 +27,29 @@ public class Main {
         //
         //Если фонд не государственный, то результат всегда равен 0 (деньги из фонда украли)
 
+
+        Worker daniil = new Worker();
+        daniil.setName("Даниил");
+        Worker ivan = new Worker();
+        ivan.setName("Иван");
+        Worker sergey = new Worker();
+        sergey.setName("Сергей");
+
+        daniil.setDad(ivan);
+        ivan.setDad(sergey);
+
+        //Даниил сын Ивана
+        //Иван сын Сергея
+
+        Person dad = daniil.getDad();
+
+        System.out.println(dad.getName());
+
+        Person grandpa = dad.getDad();
+
+        System.out.println(grandpa.getName());
+
+
+
     }
 }
