@@ -1,13 +1,14 @@
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
+//Protected
+//Классы упаковщики
+
 public class PensionFund {
-
-    //а) Именование пенсионного фонда
-    //б) булеан переменная, явлется ли он государственным
-    //в) Дата создания
-    //г) количество участников фонда
-
     private String name;
 
     private boolean isState;
@@ -16,11 +17,22 @@ public class PensionFund {
 
     private List<Worker> persons;
 
+    private Map<DayOfWeek, Boolean> workDays;
+
     public PensionFund(String name, boolean isState, String dateOfCreation, List<Worker> persons) {
         this.name = name;
         this.isState = isState;
         this.dateOfCreation = dateOfCreation;
         this.persons = persons;
+        this.workDays = new HashMap<>();
+    }
+
+    public Map<DayOfWeek, Boolean> getWorkDays() {
+        return workDays;
+    }
+
+    public void setWorkDays(Map<DayOfWeek, Boolean> workDays) {
+        this.workDays = workDays;
     }
 
     public List<Worker> getPersons() {
@@ -89,12 +101,24 @@ public class PensionFund {
     }
 
     public double calculatePensionFor(AbleToCalculatePension object) {
-        if (isState) {
+        if (isState && isWorkDayToday()) {
             return object.calculatePension();
         }
         else {
             return 0.0;
         }
+    }
+
+    private boolean isWorkDayToday() {
+        LocalDate localDate = LocalDate.now();
+        DayOfWeek dayOfWeekNow = localDate.getDayOfWeek();
+
+        if (workDays == null) {
+            return false;
+        }
+
+        boolean isWorkDay = workDays.get(dayOfWeekNow);
+        return isWorkDay;
     }
 
     public double calculateMedianPension() {
