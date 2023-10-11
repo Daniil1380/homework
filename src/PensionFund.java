@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Objects;
 
 public class PensionFund {
@@ -13,13 +14,21 @@ public class PensionFund {
 
     private final String dateOfCreation;
 
-    private int countOfPersons;
+    private List<Worker> persons;
 
-    public PensionFund(String name, boolean isState, String dateOfCreation, int countOfPersons) {
+    public PensionFund(String name, boolean isState, String dateOfCreation, List<Worker> persons) {
         this.name = name;
         this.isState = isState;
         this.dateOfCreation = dateOfCreation;
-        this.countOfPersons = countOfPersons;
+        this.persons = persons;
+    }
+
+    public List<Worker> getPersons() {
+        return persons;
+    }
+
+    public void setPersons(List<Worker> persons) {
+        this.persons = persons;
     }
 
     public String getName() {
@@ -42,25 +51,18 @@ public class PensionFund {
         return dateOfCreation;
     }
 
-    public int getCountOfPersons() {
-        return countOfPersons;
-    }
-
-    public void setCountOfPersons(int countOfPersons) {
-        this.countOfPersons = countOfPersons;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PensionFund that = (PensionFund) o;
-        return isState == that.isState && countOfPersons == that.countOfPersons && Objects.equals(name, that.name) && Objects.equals(dateOfCreation, that.dateOfCreation);
+        return isState == that.isState && Objects.equals(name, that.name) && Objects.equals(dateOfCreation, that.dateOfCreation) && Objects.equals(persons, that.persons);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, isState, dateOfCreation, countOfPersons);
+        return Objects.hash(name, isState, dateOfCreation, persons);
     }
 
     @Override
@@ -69,17 +71,20 @@ public class PensionFund {
                 "name='" + name + '\'' +
                 ", isState=" + isState +
                 ", dateOfCreation='" + dateOfCreation + '\'' +
-                ", countOfPersons=" + countOfPersons +
+                ", persons=" + persons +
                 '}';
     }
 
     public void info() {
         System.out.println("Имя фонда " + name);
+
+        int count = (persons != null) ? persons.size() : 0;
+
         if (isState) {
-            System.out.println("В фонд вложились человек: " + countOfPersons / 1000 + " тыс.");
+            System.out.println("В фонд вложились человек: " + count / 1000 + " тыс.");
         }
         else {
-            System.out.println("В фонд вложились человек: " + countOfPersons);
+            System.out.println("В фонд вложились человек: " + count);
         }
     }
 
@@ -92,5 +97,18 @@ public class PensionFund {
         }
     }
 
+    public double calculateMedianPension() {
+        if (persons == null || persons.size() == 0) {
+            return 0.0;
+        }
+
+        double sum = 0.0;
+
+        for (Worker worker : persons) {
+            sum += calculatePensionFor(worker);
+        }
+
+        return sum / persons.size();
+    }
 
 }

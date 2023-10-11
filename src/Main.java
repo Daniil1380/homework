@@ -1,55 +1,39 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        PensionFund pensionFund = new PensionFund("Фонд Германии", true, "1990", 50023);
-        PensionFund pensionFundSecond = new PensionFund("Фонд всех любителей белок", false, "1990", 50023);
+        //1) Создайте тип данных, описывающий различные профессии в формате enum (перечисления). Профессии (для примера):
+        // строитель, программист, слесарь
+        //
+        //2) Создайте новое поле в классе Worker - множество профессий, на которых успел поработать человек. (тип данных - Set)
+        //
+        //3) В методе рассчета пенсии добавьте новый коэффициент. к финальной рассчитанной пенсии добавляется 5%
+        // за каждые три профессии. Соответственно, если человек поработал на 9 профессиях, то его бонус составит 15% к пенсии.
+
         Worker anna = new Worker();
         anna.setMinSalary(1000);
         anna.setMaxSalary(10000);
         anna.setGender(Gender.FEMALE);
 
-         double result = pensionFund.calculatePensionFor(anna);
-
-        System.out.println(result);
-
-
-        //pensionFund.info();
-        //pensionFundSecond.info();
-
-        //3) В классе пенсионный фонд реализуйте метод double calculatePensionFor. В него вы будете передавать в качестве параметра объект,
-        // реализующий интерфейс  AbleToCalculatePension. (подсказка, метод будет выглядеть вот так:
-        //
-        //public double calculatePensionFor(AbleToCalculatePension obj)
-        //
-        //4) Реализация метода будет такой: если фонд государственный - просто вызовите метод calculatePension() на объекте (на obj),
-        // который передаете в параметрах метода и верните его результат.
-        //
-        //Если фонд не государственный, то результат всегда равен 0 (деньги из фонда украли)
-
-
         Worker daniil = new Worker();
-        daniil.setName("Даниил");
-        Worker ivan = new Worker();
-        ivan.setName("Иван");
-        Worker sergey = new Worker();
-        sergey.setName("Сергей");
+        anna.setMinSalary(2000);
+        anna.setMaxSalary(50000);
+        anna.setGender(Gender.MALE);
 
-        daniil.setDad(ivan);
-        ivan.setDad(sergey);
-
-        //Даниил сын Ивана
-        //Иван сын Сергея
-
-        Person dad = daniil.getDad();
-
-        System.out.println(dad.getName());
-
-        Person grandpa = dad.getDad();
-
-        System.out.println(grandpa.getName());
+        List<Worker> workerList = new ArrayList<>();
+        workerList.add(anna);
+        workerList.add(daniil);
 
 
+        PensionFund pensionFund = new PensionFund("Фонд Германии", true, "1990", workerList);
+        PensionFund pensionFundSecond = new PensionFund("Фонд всех любителей белок", false, "1990", workerList);
+
+        double stateFundAveragePension = pensionFund.calculateMedianPension();
+        double notStateFundAveragePension = pensionFundSecond.calculateMedianPension();
+
+        System.out.println(stateFundAveragePension);
+        System.out.println(notStateFundAveragePension);
 
     }
 }

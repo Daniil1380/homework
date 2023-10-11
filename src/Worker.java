@@ -1,12 +1,18 @@
 import java.util.Objects;
+import java.util.Set;
 
 public class Worker extends Person implements AbleToCalculatePension {
 
     private final static double PENSION_COEFFICIENT = 0.25;
+    private final static double ADDITIONAL_COEFFICIENT = 0.05;
+
+    private final static int COUNT_OF_PROFS = 3;
 
     private int minSalary;
 
     private int maxSalary;
+
+    private Set<Proffession> proffessions;
 
     public Worker(String name, int age, double weight, int height) {
         super(name, age, weight, height);
@@ -68,6 +74,14 @@ public class Worker extends Person implements AbleToCalculatePension {
         this.maxSalary = maxSalary;
     }
 
+    public Set<Proffession> getProffessions() {
+        return proffessions;
+    }
+
+    public void setProffessions(Set<Proffession> proffessions) {
+        this.proffessions = proffessions;
+    }
+
     @Override
     public double calculatePension() {
         Gender gender = getGender();
@@ -85,6 +99,17 @@ public class Worker extends Person implements AbleToCalculatePension {
             averageSalary = CalculatorUtils.calculateAverage(minSalary / 2, maxSalary * 2);
         }
 
-        return averageSalary * PENSION_COEFFICIENT;
+        double additionalMoney = 0.0;
+
+        if (proffessions != null) {
+            int countProffessions = proffessions.size();
+            additionalMoney = countProffessions / COUNT_OF_PROFS * ADDITIONAL_COEFFICIENT;
+        }
+
+        //0.05
+
+
+        //return averageSalary * PENSION_COEFFICIENT + (averageSalary * PENSION_COEFFICIENT * additionalMoney);
+        return averageSalary * PENSION_COEFFICIENT * (1 + additionalMoney);
     }
 }
